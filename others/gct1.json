@@ -1,0 +1,12 @@
+{"web":{"client_id":"942020892524-r7f01k20k952a92djkgh0n636nfo57dh.apps.googleusercontent.com",
+"project_id":"gct123","auth_uri":"https://accounts.google.com/o/oauth2/auth",
+"token_uri":"https://oauth2.googleapis.com/token",
+"auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
+"client_secret":"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",
+"redirect_uris":["http://localhost"]},
+"code": "4/0AbUR2VM0dV1xR0YYEsAXAfxp15MRsQVwieG8PgZWKv_I2nJU2zfAHJp4TGqb0JbyAzowTA",
+"refresh token": "1//0gblwp4TJ7C0XCgYIARAAGBASNwF-L9IruFkCRtBJBif69v8PZxQLnbCzjeLZbTVisSz2NNfcLfHevoER7ENuG_YQHcvhh1gnvT4",
+"gmail-id":"contributions123@gmail.com",
+"password":"Guild@123"
+}
+ 
