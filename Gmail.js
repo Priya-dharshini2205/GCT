@@ -179,7 +179,6 @@ class GmailAPI {
     }
     console.log("New Contributions:");
     console.log(newMessages);
-
     return c;
   };
 }
