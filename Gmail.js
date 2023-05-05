@@ -98,7 +98,7 @@ class GmailAPI {
 
   readInboxContent = async (searchText) => {
     const threadId = await this.searchGmail(searchText);
-    var messages = [];
+    
     var newMessages = [];
     for(let i = 0;i<threadId.length;i++){
         const message = await this.readGmailContent(threadId[i]);
@@ -107,7 +107,9 @@ class GmailAPI {
         if(encodedMessage){
             //1. email body
             const decodedStr = Buffer.from(encodedMessage, "base64").toString("ascii");
+           // const decodedStr = Buffer.from(encodedMessage, "base64").toString("ascii").split(/\r?\n/)[1];
 
+           
             //2. contribution type
             const contributionType = decodedStr.split(/Contribution_Type:/i)[1].split("\r\n")[0].trim();
           
@@ -127,19 +129,8 @@ class GmailAPI {
             //5.community_points
             const community_points = 500;
            
-            //store details in object
-            const contributionDetails = {
-              contribution_type:contributionType,
-              body:decodedStr,
-              email:str,
-              user,
-              community_points 
-            }
+            
 
-            //pushing into array - contains all messages related to contribution type
-            messages.push(contributionDetails);
-              
-                    
             //pushing data into db
             try {
               const oldUser = await contribute.findOne({
@@ -147,26 +138,35 @@ class GmailAPI {
                 email:str});
 
               if(!oldUser&&user){
-               await contribute.create(contributionDetails)
-              
-              //Pushing contribution into user
-            
-              const doc = await contribute.findOne(contributionDetails);
-              user.contributions.push(doc);
-              user.save();
-              //console.log("User Details: "+user);
-              
 
-              // New Contributions
-              newMessages.push(contributionDetails);
-              console.log("New Contributions:");
-                console.log(contributionDetails);
-                console.log("Contribution inserted");
+                const contributionDetails = {
+                  contribution_type:contributionType,
+                  body:decodedStr,
+                  email:str,
+                  community_points,
+                  userFName:user.fname,
+                  userLName:user.lname,
+                  }
+                  
+                //store details in object
+                await contribute.create(contributionDetails)
+                
+                //Pushing contribution into user
+              
+                const doc = await contribute.findOne(contributionDetails);
+                user.contributions.push(doc);
+                user.save();
+                //console.log("User Details: "+user);
+                
+
+                // New Contributions
+                newMessages.push(contributionDetails);
+            
               }
               else {console.log("Loading.....");}
               
               
-              var c = contribute.find();
+              var c = await contribute.find();
 
             } catch (error) {
               console.log({status:"error",data:error})
@@ -177,7 +177,8 @@ class GmailAPI {
         
         
     }
-
+    console.log("New Contributions:");
+    console.log(newMessages);
 
     return c;
   };
